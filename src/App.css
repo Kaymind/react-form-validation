@@ -20,3 +20,16 @@
 .App-link {
   color: #09d3ac;
 }
+
+label[for='title']:after,
+label[for='first-name']:after,
+label[for='last-name']:after,
+label[for='birthday']:after,
+label[for='phone']:after,
+label[for='salary']:after {
+  content: '*';
+  display: inline-block;
+  color: red;
+  font-size: 1.4rem;
+  margin-right: 5;
+}

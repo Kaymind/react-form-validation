@@ -94,7 +94,6 @@ const Form = ({ formReducer, addData, clearCurrent, updateData, setAlert }) => {
   };
 
   const citizenFieldOne = e => {
-    const citizenFieldOne = { ...citizenId };
     citizenId.citizenFieldOne = e.target.value;
     setFormDataLocal({
       ...formDataLocal,
@@ -103,7 +102,6 @@ const Form = ({ formReducer, addData, clearCurrent, updateData, setAlert }) => {
   };
 
   const citizenFieldTwo = e => {
-    const citizenFieldTwo = { ...citizenId };
     citizenId.citizenFieldTwo = e.target.value;
     setFormDataLocal({
       ...formDataLocal,
@@ -112,7 +110,6 @@ const Form = ({ formReducer, addData, clearCurrent, updateData, setAlert }) => {
   };
 
   const citizenFieldThree = e => {
-    const citizenFieldThree = { ...citizenId };
     citizenId.citizenFieldThree = e.target.value;
     setFormDataLocal({
       ...formDataLocal,
@@ -121,7 +118,6 @@ const Form = ({ formReducer, addData, clearCurrent, updateData, setAlert }) => {
   };
 
   const citizenFieldFour = e => {
-    const citizenFieldFour = { ...citizenId };
     citizenId.citizenFieldFour = e.target.value;
     setFormDataLocal({
       ...formDataLocal,
@@ -130,7 +126,6 @@ const Form = ({ formReducer, addData, clearCurrent, updateData, setAlert }) => {
   };
 
   const citizenFieldFive = e => {
-    const citizenFieldFive = { ...citizenId };
     citizenId.citizenFieldFive = e.target.value;
     setFormDataLocal({
       ...formDataLocal,
@@ -145,9 +140,7 @@ const Form = ({ formReducer, addData, clearCurrent, updateData, setAlert }) => {
       fname,
       lname,
       birthday,
-      nationality,
       citizenId,
-      gender,
       phone,
       passport,
       salary
@@ -160,15 +153,35 @@ const Form = ({ formReducer, addData, clearCurrent, updateData, setAlert }) => {
       errors = true;
       setAlert("first name is required", "danger");
     }
+    if (fname !== "") {
+      if (Number(fname)) {
+        errors = true;
+        setAlert("first name must be a letter and at least 3 words", "danger");
+      }
+      if (fname.length < 3) {
+        errors = true;
+        setAlert("first name must be a letter and at least 3 words", "danger");
+      }
+    }
     if (lname === "") {
       errors = true;
       setAlert("last name is required", "danger");
+    }
+    if (lname !== "") {
+      if (Number(lname)) {
+        errors = true;
+        setAlert("last name must be a letter and at least 3 words", "danger");
+      }
+      if (lname.length < 3) {
+        errors = true;
+        setAlert("last name must be a letter and at least 3 words", "danger");
+      }
     }
     if (birthday === "") {
       errors = true;
       setAlert("birthday is required", "danger");
     }
-    if (phone.phonenumber === "") {
+    if (phone.countrycode === "" || phone.phonenumber === "") {
       errors = true;
       setAlert("phone number is required", "danger");
     }
@@ -177,33 +190,39 @@ const Form = ({ formReducer, addData, clearCurrent, updateData, setAlert }) => {
       setAlert("salary is required", "danger");
     }
     if (
-        !Number(citizenId.citizenFieldOne) ||
-        !Number(citizenId.citizenFieldTwo) ||
-        !Number(citizenId.citizenFieldThree) ||
-        !Number(citizenId.citizenFieldFour) ||
-        !Number(citizenId.citizenFieldFive)
+        (
+          !Number(citizenId.citizenFieldOne)   ||
+          !Number(citizenId.citizenFieldTwo)   ||
+          !Number(citizenId.citizenFieldThree) ||
+          !Number(citizenId.citizenFieldFour)  ||
+          !Number(citizenId.citizenFieldFive))
         && 
-      citizenId.citizenFieldOne.length +
-        citizenId.citizenFieldTwo.length +
-        citizenId.citizenFieldThree.length +
-        citizenId.citizenFieldFour.length +
-        citizenId.citizenFieldFive.length >
-        0 &&
-      citizenId.citizenFieldOne.length +
-        citizenId.citizenFieldTwo.length +
-        citizenId.citizenFieldThree.length +
-        citizenId.citizenFieldFour.length +
-        citizenId.citizenFieldFive.length <
-        13
+        (
+          citizenId.citizenFieldOne.length   +
+          citizenId.citizenFieldTwo.length   +
+          citizenId.citizenFieldThree.length +
+          citizenId.citizenFieldFour.length  +
+          citizenId.citizenFieldFive.length  > 0
+        )
+        &&
+        (
+          citizenId.citizenFieldOne.length   +
+          citizenId.citizenFieldTwo.length   +
+          citizenId.citizenFieldThree.length +
+          citizenId.citizenFieldFour.length  +
+          citizenId.citizenFieldFive.length  < 13
+        )
     ) {
       errors = true;
       setAlert("citizenID must be a number and 13 digits", "danger");
     }
-    if (phone.phonenumber !== "") {
-      let re = /([0-9]{3})([ -]?)([0-9]{4})/;
-      errors = re.test(phone.phonenumber);
-      if (errors) {
-        setAlert("phone number format is xxx-xxxx ", "danger");
+    if (phone.countrycode !== "" && phone.phonenumber !== "") {
+      let re = /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/im;
+      const phoneFull = phone.countrycode + phone.phonenumber;
+      let localError = re.test(phoneFull);
+      if (!localError) {
+        errors = true;
+        setAlert("incorrect phone number format", "danger");
       }
     }
     if (!Number(salary)) {
@@ -419,17 +438,18 @@ const Form = ({ formReducer, addData, clearCurrent, updateData, setAlert }) => {
           </label>
           <select
             id="phonePrefix"
-            className="mx-1 w-25"
+            className="mx-1"
+            style={{ width: '150px', height: '30px', fontSize: '0.8rem'}}
             value={phone.countrycode}
             name="phone"
             onChange={phoneCountryOnChange}
+            required
           >
-            <option value="+66" checked>
-              +66
-            </option>
+            <option value="">-- Please select --</option>
+            <option value="+66">+66</option>
             <option value="+856">+856</option>
             <option value="+1">+1</option>
-          </select>{" "}
+          </select>
           -
           <input
             type="text"
@@ -437,6 +457,7 @@ const Form = ({ formReducer, addData, clearCurrent, updateData, setAlert }) => {
             name="phoneNumber"
             value={phone.phonenumber}
             onChange={phoneNumOnChange}
+            style={{ width: '200px', height: '30px', fontSize: '0.8rem'}}
             required
           />
         </div>
@@ -463,6 +484,7 @@ const Form = ({ formReducer, addData, clearCurrent, updateData, setAlert }) => {
             value={salary}
             name="salary"
             onChange={onChange}
+            required
           />{" "}
           THB
         </div>

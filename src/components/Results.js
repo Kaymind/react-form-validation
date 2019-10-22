@@ -28,7 +28,7 @@ const Results = ({
   const [selectAll, setSelectAll] = useState(false);
 
   const [currentPage, setCurrentPage] = useState(1);
-  const [recordsPerPage, setRecordsPerPage] = useState(5);
+  const [recordsPerPage] = useState(5);
 
   // Get current records
   const indexOfLastRecord = currentPage * recordsPerPage;
@@ -109,6 +109,7 @@ const Results = ({
                 <input
                   type="checkbox"
                   checked={selectAll === true ? true : false}
+                  onChange={() => setSelectAll(false)}
                 />
               </th>
               <td>{`${data.fname.charAt(0).toUpperCase() +
