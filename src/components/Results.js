@@ -63,11 +63,20 @@ const Results = ({
             id="selectAll"
             name="selectAll"
             className="mx-1"
-            disabled={formReducer.formData.length > 0 ? false : true}
-            onChange={() => setSelectAll(!selectAll)}
+            checked={ selectAll === false ? false : true }
+            disabled={ formReducer.formData.length > 0 ? false : true }
+            onClick={ () => setSelectAll(!selectAll) }
           />
           <label htmlFor="selectAll">Select All</label>
-          <button className="mx-2" onClick={deleteAll}>
+          <button className="mx-2" 
+            onClick={ () => {
+                setSelectAll(!selectAll);
+                deleteAll();
+                setCurrentPage(1);
+              }
+            }
+            disabled={ selectAll === true ? false : true }
+          >
             Delete
           </button>
         </div>

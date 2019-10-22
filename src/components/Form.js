@@ -176,8 +176,32 @@ const Form = ({ formReducer, addData, clearCurrent, updateData, setAlert }) => {
       errors = true;
       setAlert("salary is required", "danger");
     }
+    if (
+        !Number(citizenId.citizenFieldOne) ||
+        !Number(citizenId.citizenFieldTwo) ||
+        !Number(citizenId.citizenFieldThree) ||
+        !Number(citizenId.citizenFieldFour) ||
+        !Number(citizenId.citizenFieldFive)
+        && 
+      citizenId.citizenFieldOne.length +
+        citizenId.citizenFieldTwo.length +
+        citizenId.citizenFieldThree.length +
+        citizenId.citizenFieldFour.length +
+        citizenId.citizenFieldFive.length >
+        0 &&
+      citizenId.citizenFieldOne.length +
+        citizenId.citizenFieldTwo.length +
+        citizenId.citizenFieldThree.length +
+        citizenId.citizenFieldFour.length +
+        citizenId.citizenFieldFive.length <
+        13
+    ) {
+      errors = true;
+      setAlert("citizenID must be a number and 13 digits", "danger");
+    }
     if (phone.phonenumber !== "") {
-      errors = phone.phonenumber.match(/([0-9]{3})([ -]?)([0-9]{4})/);
+      let re = /([0-9]{3})([ -]?)([0-9]{4})/;
+      errors = re.test(phone.phonenumber);
       if (errors) {
         setAlert("phone number format is xxx-xxxx ", "danger");
       }
@@ -190,21 +214,6 @@ const Form = ({ formReducer, addData, clearCurrent, updateData, setAlert }) => {
       errors = true;
       setAlert("passport must be a number", "danger");
     }
-    // if (!Number(phone.phonenumber)) {
-    //   errors = true;
-    //   setAlert("phone must be a number", "danger");
-    // }
-    if (
-      !Number(citizenId.citizenFieldOne) ||
-      !Number(citizenId.citizenFieldTwo) ||
-      !Number(citizenId.citizenFieldThree) ||
-      !Number(citizenId.citizenFieldFour) ||
-      !Number(citizenId.citizenFieldFive)
-    ) {
-      errors = true;
-      setAlert("citicenId must be a number", "danger");
-    }
-
     return errors;
   };
 
@@ -218,27 +227,9 @@ const Form = ({ formReducer, addData, clearCurrent, updateData, setAlert }) => {
       } else {
         addData(formDataLocal);
       }
-      setFormDataLocal({
-        title: "",
-        fname: "",
-        lname: "",
-        birthday: "",
-        nationality: "",
-        citizenId: {
-          citizenFieldOne: "",
-          citizenFieldTwo: "",
-          citizenFieldThree: "",
-          citizenFieldFour: "",
-          citizenFieldFive: ""
-        },
-        gender: "",
-        phone: {
-          countrycode: "",
-          phonenumber: ""
-        },
-        passport: "",
-        salary: ""
-      });
+      clearForm();
+    } else {
+      setFormDataLocal(formDataLocal);
     }
   };
 
