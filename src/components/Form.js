@@ -163,11 +163,7 @@ const Form = ({ formReducer, addData, clearCurrent, updateData, setAlert }) => {
       setAlert("First name is required", "danger");
     }
     if (fname !== "") {
-      if (Number(fname)) {
-        errors = true;
-        setAlert("First name must be a letter and at least 3 words", "danger");
-      }
-      if (fname.length < 3) {
+      if (Number(fname) || fname.length < 3) {
         errors = true;
         setAlert("First name must be a letter and at least 3 words", "danger");
       }
@@ -177,11 +173,7 @@ const Form = ({ formReducer, addData, clearCurrent, updateData, setAlert }) => {
       setAlert("Last name is required", "danger");
     }
     if (lname !== "") {
-      if (Number(lname)) {
-        errors = true;
-        setAlert("Last name must be a letter and at least 3 words", "danger");
-      }
-      if (lname.length < 3) {
+      if (Number(lname) || lname.length < 3) {
         errors = true;
         setAlert("Last name must be a letter and at least 3 words", "danger");
       }
