@@ -1,3 +1,5 @@
+import { LOAD_DATA, ADD, UPDATE, DELETE_ALL, DELETE, EDIT, CLEAR_CURRENT} from '../actions/types';
+
 const initialState = {
   formData: [],
   edit: null
@@ -7,7 +9,7 @@ const formReducer = (state = initialState, action) => {
   const { type, payload } = action;
 
   switch (type) {
-    case "LOAD_DATA":
+    case LOAD_DATA:
       let data = JSON.parse(localStorage.getItem("formData"));
       console.log("data" + data);
       if (data === null) data = [];
@@ -15,7 +17,7 @@ const formReducer = (state = initialState, action) => {
         ...state,
         formData: [...state.formData, ...data]
       };
-    case "ADD":
+    case ADD:
       let arrData = [];
       if (localStorage.getItem("formData") !== null) {
         arrData = JSON.parse(localStorage.getItem("formData"));
@@ -27,7 +29,7 @@ const formReducer = (state = initialState, action) => {
         ...state,
         formData: [payload, ...state.formData]
       };
-    case "UPDATE":
+    case UPDATE:
       let updateData = JSON.parse(localStorage.getItem("formData")).map(data =>
         data.id === payload.id ? payload : data
       );
@@ -36,17 +38,17 @@ const formReducer = (state = initialState, action) => {
         ...state,
         formData: updateData
       };
-    case "EDIT":
+    case EDIT:
       return {
         ...state,
         edit: payload
       };
-    case "CLEAR_CURRENT":
+    case CLEAR_CURRENT:
       return {
         ...state,
         edit: null
       };
-    case "DELETE":
+    case DELETE:
       let deletedData = JSON.parse(localStorage.getItem("formData")).filter(
         data => data.id !== payload
       );
@@ -56,7 +58,7 @@ const formReducer = (state = initialState, action) => {
         formData: [...deletedData],
         edit: null
       };
-    case "DELETE_ALL":
+    case DELETE_ALL:
       localStorage.removeItem("formData");
       return {
         formData: [],
