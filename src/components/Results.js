@@ -113,8 +113,8 @@ const Results = ({
                 />
               </th>
               <td>{`${data.fname.charAt(0).toUpperCase() +
-                data.fname.slice(1)} ${data.lname.charAt(0).toUpperCase() +
-                data.lname.slice(1)}`}</td>
+                data.fname.slice(1).toLowerCase()} ${data.lname.charAt(0).toUpperCase() +
+                data.lname.slice(1).toLowerCase()}`}</td>
               <td>{`${data.gender.toUpperCase()}`}</td>
               <td>{`${data.phone.countrycode} ${data.phone.phonenumber}`}</td>
               <td>{`${data.nationality.toUpperCase()}`}</td>
