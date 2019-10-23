@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
+import PhoneInput from 'react-phone-input-2';
+import 'react-phone-input-2/dist/style.css';
 import { addData, clearCurrent, updateData } from "../actions/form.action";
 import { setAlert } from "../actions/alert.action";
 import PropTypes from "prop-types";
@@ -25,7 +27,7 @@ const Form = ({ formReducer, addData, clearCurrent, updateData, setAlert }) => {
         },
         gender: "",
         phone: {
-          countrycode: "",
+          countrycode: "+66",
           phonenumber: ""
         },
         passport: "",
@@ -57,7 +59,7 @@ const Form = ({ formReducer, addData, clearCurrent, updateData, setAlert }) => {
     },
     gender: "",
     phone: {
-      countrycode: "",
+      countrycode: "+66",
       phonenumber: ""
     },
     passport: "",
@@ -84,9 +86,9 @@ const Form = ({ formReducer, addData, clearCurrent, updateData, setAlert }) => {
     });
   };
 
-  const phoneCountryOnChange = e => {
+  const phoneCountryOnChange = (value, data) => {
     const phoneCountryCode = { ...phone };
-    phoneCountryCode.countrycode = e.target.value;
+    phoneCountryCode.countrycode = "+" + data.dialCode;
     setFormDataLocal({
       ...formDataLocal,
       phone: phoneCountryCode
@@ -182,7 +184,7 @@ const Form = ({ formReducer, addData, clearCurrent, updateData, setAlert }) => {
       errors = true;
       setAlert("Birthday is required", "danger");
     }
-    if (phone.countrycode === "" || phone.phonenumber === "") {
+    if (phone.phonenumber === "") {
       errors = true;
       setAlert("Phone number is required", "danger");
     }
@@ -225,7 +227,7 @@ const Form = ({ formReducer, addData, clearCurrent, updateData, setAlert }) => {
         setAlert("CitizenID must be a number", "danger");
       }
     }
-    if (phone.countrycode !== "" && phone.phonenumber !== "") {
+    if (phone.phonenumber !== "") {
       let re = /^[+][0-9]{1,4}[-]?[0-9]{3}[-]?[0-9]{4,6}$/;
       const phoneFull = phone.countrycode + phone.phonenumber;
       let localError = re.test(phoneFull);
@@ -446,33 +448,29 @@ const Form = ({ formReducer, addData, clearCurrent, updateData, setAlert }) => {
           <label htmlFor="phone" className="w-50 text-left">
             Mobile Phone:
           </label>
-          <select
-            id="phonePrefix"
-            className="mx-1"
-            style={{ width: "150px", height: "30px", fontSize: "0.8rem" }}
-            value={phone.countrycode}
-            name="phone"
-            onChange={phoneCountryOnChange}
-          >
-            <option value="">-- Please select --</option>
-            {ccData !== null &&
-              ccData.map(data => (
-                <option key={data.code} value={data.dial_code}>
-                  {data.dial_code}
-                </option>
-              ))}
-          </select>
-          -
-          <input
-            type="text"
-            className="w-75 ml-1"
-            name="phoneNumber"
-            value={phone.phonenumber}
-            onChange={phoneNumOnChange}
-            style={{ width: "200px", height: "30px", fontSize: "0.8rem" }}
-          />
+          <div style={{margin: '5px'}}>
+            <PhoneInput 
+                  value={phone.countrycode} 
+                  onChange = {phoneCountryOnChange} 
+                  disableAreaCodes={true}
+                  enableSearchField={true}
+                  defaultCountry={'th'}
+                  inputStyle={{width: '105px'}}
+            />
+            </div>
+          </div>
+          <div className="form-group d-flex align-items-center">
+            {"-"}
+            <input
+              type="text"
+              className="w-100 ml-1 form-control"
+              name="phoneNumber"
+              value={phone.phonenumber}
+              onChange={phoneNumOnChange}
+              style={{ width: "200px", height: "30px", fontSize: "0.8rem" }}
+            />
+          </div>
         </div>
-      </div>
       <div className="row">
         <div className="form-group">
           <label htmlFor="passport">Passport No:</label>
