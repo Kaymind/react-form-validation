@@ -95,10 +95,10 @@ const Results = ({
         <thead className="thead-dark">
           <tr>
             <th scope="col"></th>
-            <th scope="col">Name</th>
-            <th scope="col">Gender</th>
-            <th scope="col">Mobile Phone</th>
-            <th scope="col">Nationality</th>
+            <th scope="col">NAME</th>
+            <th scope="col">GENDER</th>
+            <th scope="col">MOBILE PHONE</th>
+            <th scope="col">NATIONALITY</th>
             <th scope="col"></th>
           </tr>
         </thead>

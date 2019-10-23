@@ -24,7 +24,7 @@ const Pagination = ({
             to=""
             onClick={() => prevPage(currentPage)}
           >
-            Previous
+            PREV
           </Link>
         </li>
         {pageNumbers.map(number => {
@@ -55,7 +55,7 @@ const Pagination = ({
             to=""
             onClick={() => nextPage(currentPage, pageNumbers.length)}
           >
-            Next
+            NEXT
           </Link>
         </li>
       </ul>
