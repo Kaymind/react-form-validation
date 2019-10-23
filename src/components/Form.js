@@ -199,26 +199,39 @@ const Form = ({ formReducer, addData, clearCurrent, updateData, setAlert }) => {
       setAlert("Salary is required", "danger");
     }
     if (
-      !Number(citizenId.citizenFieldOne) ||
-      !Number(citizenId.citizenFieldTwo) ||
-      !Number(citizenId.citizenFieldThree) ||
-      !Number(citizenId.citizenFieldFour) ||
-      !Number(citizenId.citizenFieldFive) ||
-      (citizenId.citizenFieldOne.length +
+      citizenId.citizenFieldOne.length +
         citizenId.citizenFieldTwo.length +
         citizenId.citizenFieldThree.length +
         citizenId.citizenFieldFour.length +
         citizenId.citizenFieldFive.length >
         0 &&
-        citizenId.citizenFieldOne.length +
-          citizenId.citizenFieldTwo.length +
-          citizenId.citizenFieldThree.length +
-          citizenId.citizenFieldFour.length +
-          citizenId.citizenFieldFive.length <
-          13)
+      citizenId.citizenFieldOne.length +
+        citizenId.citizenFieldTwo.length +
+        citizenId.citizenFieldThree.length +
+        citizenId.citizenFieldFour.length +
+        citizenId.citizenFieldFive.length <
+        13
     ) {
       errors = true;
-      setAlert("CitizenID must be a number and 13 digits", "danger");
+      setAlert("CitizenID must be 13 digits", "danger");
+    } else if (
+      citizenId.citizenFieldOne.length +
+        citizenId.citizenFieldTwo.length +
+        citizenId.citizenFieldThree.length +
+        citizenId.citizenFieldFour.length +
+        citizenId.citizenFieldFive.length ===
+      13
+    ) {
+      if (
+        !Number(citizenId.citizenFieldOne) ||
+        !Number(citizenId.citizenFieldTwo) ||
+        !Number(citizenId.citizenFieldThree) ||
+        !Number(citizenId.citizenFieldFour) ||
+        !Number(citizenId.citizenFieldFive)
+      ) {
+        errors = true;
+        setAlert("CitizenID must be a number", "danger");
+      }
     }
     if (phone.countrycode !== "" && phone.phonenumber !== "") {
       let re = /^[+]?[(]?[0-9]{3,4}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/im;
@@ -247,8 +260,10 @@ const Form = ({ formReducer, addData, clearCurrent, updateData, setAlert }) => {
       if (formReducer.edit !== null) {
         updateData(formDataLocal);
         clearCurrent();
+        setAlert("Record updated", "success");
       } else {
         addData(formDataLocal);
+        setAlert("Record added", "success");
       }
       clearForm();
     } else {
