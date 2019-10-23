@@ -3,6 +3,7 @@ import { connect } from "react-redux";
 import { addData, clearCurrent, updateData } from "../actions/form.action";
 import { setAlert } from "../actions/alert.action";
 import PropTypes from "prop-types";
+import axios from "axios";
 
 const Form = ({ formReducer, addData, clearCurrent, updateData, setAlert }) => {
   useEffect(() => {
@@ -32,6 +33,14 @@ const Form = ({ formReducer, addData, clearCurrent, updateData, setAlert }) => {
       });
     }
   }, [formReducer.edit]);
+
+  useEffect(() => {
+    axios.get("cc_data.json").then(res => {
+      setCCData(res.data);
+    });
+  }, []);
+
+  let [ccData, setCCData] = useState(null);
 
   const [formDataLocal, setFormDataLocal] = useState({
     title: "",
@@ -190,34 +199,29 @@ const Form = ({ formReducer, addData, clearCurrent, updateData, setAlert }) => {
       setAlert("salary is required", "danger");
     }
     if (
-        (
-          !Number(citizenId.citizenFieldOne)   ||
-          !Number(citizenId.citizenFieldTwo)   ||
-          !Number(citizenId.citizenFieldThree) ||
-          !Number(citizenId.citizenFieldFour)  ||
-          !Number(citizenId.citizenFieldFive))
-        && 
-        (
-          citizenId.citizenFieldOne.length   +
-          citizenId.citizenFieldTwo.length   +
-          citizenId.citizenFieldThree.length +
-          citizenId.citizenFieldFour.length  +
-          citizenId.citizenFieldFive.length  > 0
-        )
-        &&
-        (
-          citizenId.citizenFieldOne.length   +
-          citizenId.citizenFieldTwo.length   +
-          citizenId.citizenFieldThree.length +
-          citizenId.citizenFieldFour.length  +
-          citizenId.citizenFieldFive.length  < 13
-        )
+      (!Number(citizenId.citizenFieldOne) ||
+        !Number(citizenId.citizenFieldTwo) ||
+        !Number(citizenId.citizenFieldThree) ||
+        !Number(citizenId.citizenFieldFour) ||
+        !Number(citizenId.citizenFieldFive)) &&
+      citizenId.citizenFieldOne.length +
+        citizenId.citizenFieldTwo.length +
+        citizenId.citizenFieldThree.length +
+        citizenId.citizenFieldFour.length +
+        citizenId.citizenFieldFive.length >
+        0 &&
+      citizenId.citizenFieldOne.length +
+        citizenId.citizenFieldTwo.length +
+        citizenId.citizenFieldThree.length +
+        citizenId.citizenFieldFour.length +
+        citizenId.citizenFieldFive.length <
+        13
     ) {
       errors = true;
       setAlert("citizenID must be a number and 13 digits", "danger");
     }
     if (phone.countrycode !== "" && phone.phonenumber !== "") {
-      let re = /^[+]?[(]?[0-9]{3}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/im;
+      let re = /^[+]?[(]?[0-9]{3,4}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/im;
       const phoneFull = phone.countrycode + phone.phonenumber;
       let localError = re.test(phoneFull);
       if (!localError) {
@@ -341,10 +345,13 @@ const Form = ({ formReducer, addData, clearCurrent, updateData, setAlert }) => {
             name="nationality"
             onChange={onChange}
           >
-            <option value="0">-- Please select --</option>
-            <option value="Thai">Thai</option>
-            <option value="American">American</option>
-            <option value="Laos">Laos</option>
+            <option value="">-- Please select --</option>
+            {ccData !== null &&
+              ccData.map(data => (
+                <option key={data.code} value={data.name}>
+                  {data.name}
+                </option>
+              ))}
           </select>
         </div>
       </div>
@@ -439,16 +446,19 @@ const Form = ({ formReducer, addData, clearCurrent, updateData, setAlert }) => {
           <select
             id="phonePrefix"
             className="mx-1"
-            style={{ width: '150px', height: '30px', fontSize: '0.8rem'}}
+            style={{ width: "150px", height: "30px", fontSize: "0.8rem" }}
             value={phone.countrycode}
             name="phone"
             onChange={phoneCountryOnChange}
             required
           >
             <option value="">-- Please select --</option>
-            <option value="+66">+66</option>
-            <option value="+856">+856</option>
-            <option value="+1">+1</option>
+            {ccData !== null &&
+              ccData.map(data => (
+                <option key={data.code} value={data.dial_code}>
+                  {data.dial_code}
+                </option>
+              ))}
           </select>
           -
           <input
@@ -457,7 +467,7 @@ const Form = ({ formReducer, addData, clearCurrent, updateData, setAlert }) => {
             name="phoneNumber"
             value={phone.phonenumber}
             onChange={phoneNumOnChange}
-            style={{ width: '200px', height: '30px', fontSize: '0.8rem'}}
+            style={{ width: "200px", height: "30px", fontSize: "0.8rem" }}
             required
           />
         </div>
