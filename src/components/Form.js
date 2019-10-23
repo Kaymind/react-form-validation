@@ -226,7 +226,7 @@ const Form = ({ formReducer, addData, clearCurrent, updateData, setAlert }) => {
       }
     }
     if (phone.countrycode !== "" && phone.phonenumber !== "") {
-      let re = /^[+]?[(]?[0-9]{3,4}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/im;
+      let re = /^[+][0-9]{1,4}[-]?[0-9]{3}[-]?[0-9]{4,6}$/;
       const phoneFull = phone.countrycode + phone.phonenumber;
       let localError = re.test(phoneFull);
       if (!localError) {
