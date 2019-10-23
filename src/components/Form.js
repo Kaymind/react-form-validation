@@ -156,69 +156,69 @@ const Form = ({ formReducer, addData, clearCurrent, updateData, setAlert }) => {
     } = formDataLocal;
     if (title === "") {
       errors = true;
-      setAlert("title is required", "danger");
+      setAlert("Title is required", "danger");
     }
     if (fname === "") {
       errors = true;
-      setAlert("first name is required", "danger");
+      setAlert("First name is required", "danger");
     }
     if (fname !== "") {
       if (Number(fname)) {
         errors = true;
-        setAlert("first name must be a letter and at least 3 words", "danger");
+        setAlert("First name must be a letter and at least 3 words", "danger");
       }
       if (fname.length < 3) {
         errors = true;
-        setAlert("first name must be a letter and at least 3 words", "danger");
+        setAlert("First name must be a letter and at least 3 words", "danger");
       }
     }
     if (lname === "") {
       errors = true;
-      setAlert("last name is required", "danger");
+      setAlert("Last name is required", "danger");
     }
     if (lname !== "") {
       if (Number(lname)) {
         errors = true;
-        setAlert("last name must be a letter and at least 3 words", "danger");
+        setAlert("Last name must be a letter and at least 3 words", "danger");
       }
       if (lname.length < 3) {
         errors = true;
-        setAlert("last name must be a letter and at least 3 words", "danger");
+        setAlert("Last name must be a letter and at least 3 words", "danger");
       }
     }
     if (birthday === "") {
       errors = true;
-      setAlert("birthday is required", "danger");
+      setAlert("Birthday is required", "danger");
     }
     if (phone.countrycode === "" || phone.phonenumber === "") {
       errors = true;
-      setAlert("phone number is required", "danger");
+      setAlert("Phone number is required", "danger");
     }
     if (salary === "") {
       errors = true;
-      setAlert("salary is required", "danger");
+      setAlert("Salary is required", "danger");
     }
     if (
-      (!Number(citizenId.citizenFieldOne) ||
-        !Number(citizenId.citizenFieldTwo) ||
-        !Number(citizenId.citizenFieldThree) ||
-        !Number(citizenId.citizenFieldFour) ||
-        !Number(citizenId.citizenFieldFive)) &&
-      citizenId.citizenFieldOne.length +
+      !Number(citizenId.citizenFieldOne) ||
+      !Number(citizenId.citizenFieldTwo) ||
+      !Number(citizenId.citizenFieldThree) ||
+      !Number(citizenId.citizenFieldFour) ||
+      !Number(citizenId.citizenFieldFive) ||
+      (citizenId.citizenFieldOne.length +
         citizenId.citizenFieldTwo.length +
         citizenId.citizenFieldThree.length +
         citizenId.citizenFieldFour.length +
         citizenId.citizenFieldFive.length >
         0 &&
-      citizenId.citizenFieldOne.length +
-        citizenId.citizenFieldTwo.length +
-        citizenId.citizenFieldThree.length +
-        citizenId.citizenFieldFour.length +
-        citizenId.citizenFieldFive.length <
-        13
+        citizenId.citizenFieldOne.length +
+          citizenId.citizenFieldTwo.length +
+          citizenId.citizenFieldThree.length +
+          citizenId.citizenFieldFour.length +
+          citizenId.citizenFieldFive.length <
+          13)
     ) {
       errors = true;
-      setAlert("citizenID must be a number and 13 digits", "danger");
+      setAlert("CitizenID must be a number and 13 digits", "danger");
     }
     if (phone.countrycode !== "" && phone.phonenumber !== "") {
       let re = /^[+]?[(]?[0-9]{3,4}[)]?[-\s.]?[0-9]{3}[-\s.]?[0-9]{4,6}$/im;
@@ -226,16 +226,16 @@ const Form = ({ formReducer, addData, clearCurrent, updateData, setAlert }) => {
       let localError = re.test(phoneFull);
       if (!localError) {
         errors = true;
-        setAlert("incorrect phone number format", "danger");
+        setAlert("Incorrect phone number format", "danger");
       }
     }
-    if (!Number(salary)) {
+    if (salary !== "" && !Number(salary)) {
       errors = true;
-      setAlert("salary must be a number", "danger");
+      setAlert("Salary must be a number", "danger");
     }
-    if (!Number(passport)) {
+    if (passport !== "" && !Number(passport)) {
       errors = true;
-      setAlert("passport must be a number", "danger");
+      setAlert("Passport must be a number", "danger");
     }
     return errors;
   };
@@ -292,7 +292,6 @@ const Form = ({ formReducer, addData, clearCurrent, updateData, setAlert }) => {
             value={title}
             name="title"
             onChange={e => onChange(e)}
-            required
           >
             <option value="">-- Please select --</option>
             <option value="Mr">Mr</option>
@@ -309,7 +308,6 @@ const Form = ({ formReducer, addData, clearCurrent, updateData, setAlert }) => {
             value={fname}
             name="fname"
             onChange={e => onChange(e)}
-            required
           />
         </div>
         <div className="form-group mr-3">
@@ -320,7 +318,6 @@ const Form = ({ formReducer, addData, clearCurrent, updateData, setAlert }) => {
             value={lname}
             name="lname"
             onChange={e => onChange(e)}
-            required
           />
         </div>
       </div>
@@ -333,7 +330,6 @@ const Form = ({ formReducer, addData, clearCurrent, updateData, setAlert }) => {
             className="mx-1"
             value={birthday}
             onChange={onChange}
-            required
           />
         </div>
         <div className="form-group">
@@ -450,7 +446,6 @@ const Form = ({ formReducer, addData, clearCurrent, updateData, setAlert }) => {
             value={phone.countrycode}
             name="phone"
             onChange={phoneCountryOnChange}
-            required
           >
             <option value="">-- Please select --</option>
             {ccData !== null &&
@@ -468,7 +463,6 @@ const Form = ({ formReducer, addData, clearCurrent, updateData, setAlert }) => {
             value={phone.phonenumber}
             onChange={phoneNumOnChange}
             style={{ width: "200px", height: "30px", fontSize: "0.8rem" }}
-            required
           />
         </div>
       </div>
@@ -494,7 +488,6 @@ const Form = ({ formReducer, addData, clearCurrent, updateData, setAlert }) => {
             value={salary}
             name="salary"
             onChange={onChange}
-            required
           />{" "}
           THB
         </div>
