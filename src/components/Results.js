@@ -115,9 +115,9 @@ const Results = ({
               <td>{`${data.fname.charAt(0).toUpperCase() +
                 data.fname.slice(1).toLowerCase()} ${data.lname.charAt(0).toUpperCase() +
                 data.lname.slice(1).toLowerCase()}`}</td>
-              <td>{`${data.gender.toUpperCase()}`}</td>
+              <td>{`${data.gender === "" ? "-" : data.gender.toUpperCase()}`}</td>
               <td>{`${data.phone.countrycode} ${data.phone.phonenumber}`}</td>
-              <td>{`${data.nationality.toUpperCase()}`}</td>
+              <td>{`${data.nationality === "" ? "-" : data.nationality.toUpperCase()}`}</td>
               <td>
                 <Link to="!#" onClick={() => editData(data)}>
                   Edit
