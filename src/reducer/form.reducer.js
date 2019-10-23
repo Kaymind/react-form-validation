@@ -9,6 +9,7 @@ const formReducer = (state = initialState, action) => {
   switch (type) {
     case "LOAD_DATA":
       let data = JSON.parse(localStorage.getItem("formData"));
+      console.log("data" + data);
       if (data === null) data = [];
       return {
         ...state,
@@ -16,11 +17,11 @@ const formReducer = (state = initialState, action) => {
       };
     case "ADD":
       let arrData = [];
-      if (localStorage.getItem("formData")) {
+      if (localStorage.getItem("formData") !== null) {
         arrData = JSON.parse(localStorage.getItem("formData"));
       }
 
-      arrData.push(payload);
+      arrData.unshift(payload);
       localStorage.setItem("formData", JSON.stringify(arrData));
       return {
         ...state,
@@ -36,12 +37,9 @@ const formReducer = (state = initialState, action) => {
         formData: updateData
       };
     case "EDIT":
-      let editData = JSON.parse(localStorage.getItem("formData")).filter(
-        data => data.id === payload
-      )[0];
       return {
         ...state,
-        edit: editData
+        edit: payload
       };
     case "CLEAR_CURRENT":
       return {

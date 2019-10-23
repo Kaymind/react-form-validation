@@ -119,7 +119,7 @@ const Results = ({
               <td>{`${data.phone.countrycode} ${data.phone.phonenumber}`}</td>
               <td>{`${data.nationality.toUpperCase()}`}</td>
               <td>
-                <Link to="!#" onClick={() => editData(data.id)}>
+                <Link to="!#" onClick={() => editData(data)}>
                   Edit
                 </Link>{" "}
                 /{" "}
