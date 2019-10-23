@@ -11,7 +11,6 @@ const formReducer = (state = initialState, action) => {
   switch (type) {
     case LOAD_DATA:
       let data = JSON.parse(localStorage.getItem("formData"));
-      console.log("data" + data);
       if (data === null) data = [];
       return {
         ...state,
