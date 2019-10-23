@@ -282,7 +282,7 @@ const Form = ({ formReducer, addData, clearCurrent, updateData, setAlert }) => {
       },
       gender: "",
       phone: {
-        countrycode: "",
+        countrycode: "+66",
         phonenumber: ""
       },
       passport: "",
