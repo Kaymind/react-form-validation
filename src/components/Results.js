@@ -94,28 +94,26 @@ const Results = ({
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.value) {
-        Swal.fire(
-          'Deleted!',
-          'Your file has been deleted.',
-          'success'
-        );
         setSelectAll(false);
         let deletedData = [];
         if (selectAll === true) {
           deleteAll();
-          setAlert("Records deleted", "success");
         } else {
           deletedData = checkboxItem.filter(item =>
             item.isChecked === true ? item : ""
           );
           deleteSome(deletedData);
-          setAlert(`${deletedData.length > 1 ? 'Records' : 'Record'} deleted`, "success");
         }
+        Swal.fire(
+          'Deleted!',
+          `Your ${deletedData.length > 1 ? 'records have' : 'record has'} been deleted.`,
+          'success'
+        );
       }
     });
   };
 
-  const handleDeleteByItem = (data) => {
+  const handleDeleteByItem = data => {
     Swal.fire({
       title: 'Are you sure?',
       text: "You won't be able to revert this!",
@@ -128,10 +126,9 @@ const Results = ({
       if (result.value) {
         Swal.fire(
           'Deleted!',
-          'Your file has been deleted.',
+          'Your record has been deleted.',
           'success'
         );
-        setAlert("Record deleted", "success")
         deleteData(data.id);
         clearCurrent();
       }
