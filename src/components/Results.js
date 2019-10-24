@@ -14,8 +14,6 @@ import PropTypes from "prop-types";
 import Pagination from "./Pagination";
 
 import Swal from "sweetalert2";
-import withReactContent from "sweetalert2-react-content";
-const MySwal = withReactContent(Swal);
 
 const Results = ({
   formReducer,
@@ -139,7 +137,7 @@ const Results = ({
       }
     });
   };
-
+  // value={selectAll === false ? false : true}
   return (
     <Fragment>
       <div className="form-group d-flex justify-content-between">
@@ -149,7 +147,6 @@ const Results = ({
             id="selectAll"
             name="selectAll"
             className="mx-1"
-            value={selectAll === false ? false : true}
             checked={selectAll === false ? false : true}
             disabled={formReducer.formData.length > 0 ? false : true}
             onClick={handleSelectAll}
@@ -198,7 +195,6 @@ const Results = ({
               <th scope="row">
                 <input
                   type="checkbox"
-                  value={selectAll === false ? false : true}
                   checked={
                     selectAll === true
                       ? true
