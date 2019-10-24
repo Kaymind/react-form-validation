@@ -30,7 +30,6 @@ const Results = ({
   // Set default checkbox
   useEffect(() => {
     formReducer.formData.forEach(item => {
-      // setCheckboxItem([...checkboxItem, {id: item.id, isChecked: false }])
       checkboxList.push({ id: item.id, isChecked: false });
     });
     setCheckboxItem(checkboxList);
