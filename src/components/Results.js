@@ -6,6 +6,7 @@ import {
   editData,
   deleteData,
   deleteAll,
+  deleteSome,
   clearCurrent
 } from "../actions/form.action";
 import PropTypes from "prop-types";
@@ -18,6 +19,7 @@ const Results = ({
   editData,
   deleteData,
   deleteAll,
+  deleteSome,
   clearCurrent
 }) => {
   useEffect(() => {
@@ -25,7 +27,20 @@ const Results = ({
     // eslint-disable-next-line
   }, []);
 
+  // Set default checkbox
+  useEffect(() => {
+    formReducer.formData.forEach(item => {
+      // setCheckboxItem([...checkboxItem, {id: item.id, isChecked: false }])
+      checkboxList.push({ id: item.id, isChecked: false });
+    });
+    setCheckboxItem(checkboxList);
+    // eslint-disable-next-line
+  }, [formReducer.formData]);
+
+  const checkboxList = [];
+
   const [selectAll, setSelectAll] = useState(false);
+  const [checkboxItem, setCheckboxItem] = useState([]);
 
   const [currentPage, setCurrentPage] = useState(1);
   const [recordsPerPage] = useState(5);
@@ -54,6 +69,30 @@ const Results = ({
     }
   };
 
+  const handleSelectAll = () => {
+    let checkboxes = [...checkboxItem];
+    setSelectAll(!selectAll);
+    if (selectAll === true) {
+      checkboxes.forEach(item => (item.isChecked = false));
+      setCheckboxItem(checkboxes);
+    } else {
+      checkboxes.forEach(item => (item.isChecked = true));
+      setCheckboxItem(checkboxes);
+    }
+  };
+
+  const handleDeleteAll = () => {
+    setSelectAll(false);
+    let deletedData = [];
+    if (selectAll === true) {
+      deleteAll();
+    } else {
+      deletedData = checkboxItem.filter(item =>
+        item.isChecked === true ? item : ""
+      );
+      deleteSome(deletedData);
+    }
+  };
   return (
     <Fragment>
       <div className="form-group d-flex justify-content-between">
@@ -63,19 +102,23 @@ const Results = ({
             id="selectAll"
             name="selectAll"
             className="mx-1"
-            checked={ selectAll === false ? false : true }
-            disabled={ formReducer.formData.length > 0 ? false : true }
-            onClick={ () => setSelectAll(!selectAll) }
+            value={selectAll === false ? false : true}
+            checked={selectAll === false ? false : true}
+            disabled={formReducer.formData.length > 0 ? false : true}
+            onClick={handleSelectAll}
           />
           <label htmlFor="selectAll">Select All</label>
-          <button className="mx-2" 
-            onClick={ () => {
-                setSelectAll(!selectAll);
-                deleteAll();
-                setCurrentPage(1);
-              }
+          <button
+            className="mx-2"
+            onClick={() => {
+              handleDeleteAll();
+              setCurrentPage(1);
+            }}
+            disabled={
+              !checkboxItem
+                .map(item => (item.isChecked === true ? true : false))
+                .some(item => item === true)
             }
-            disabled={ selectAll === true ? false : true }
           >
             Delete
           </button>
@@ -108,16 +151,37 @@ const Results = ({
               <th scope="row">
                 <input
                   type="checkbox"
-                  checked={selectAll === true ? true : false}
-                  onChange={() => setSelectAll(false)}
+                  value={selectAll === false ? false : true}
+                  checked={
+                    selectAll === true
+                      ? true
+                      : checkboxItem.find(
+                          item => item.id === data.id && item.isChecked
+                        )
+                  }
+                  onChange={() => {
+                    setSelectAll(false);
+                    const checkboxes = [...checkboxItem];
+                    checkboxes.forEach(item =>
+                      item.id === data.id
+                        ? (item.isChecked = !item.isChecked)
+                        : item
+                    );
+                    setCheckboxItem(checkboxes);
+                  }}
                 />
               </th>
               <td>{`${data.fname.charAt(0).toUpperCase() +
-                data.fname.slice(1).toLowerCase()} ${data.lname.charAt(0).toUpperCase() +
-                data.lname.slice(1).toLowerCase()}`}</td>
-              <td>{`${data.gender === "" ? "-" : data.gender.toUpperCase()}`}</td>
+                data.fname.slice(1).toLowerCase()} ${data.lname
+                .charAt(0)
+                .toUpperCase() + data.lname.slice(1).toLowerCase()}`}</td>
+              <td>{`${
+                data.gender === "" ? "-" : data.gender.toUpperCase()
+              }`}</td>
               <td>{`${data.phone.countrycode} ${data.phone.phonenumber}`}</td>
-              <td>{`${data.nationality === "" ? "-" : data.nationality.toUpperCase()}`}</td>
+              <td>{`${
+                data.nationality === "" ? "-" : data.nationality.toUpperCase()
+              }`}</td>
               <td>
                 <Link to="!#" onClick={() => editData(data)}>
                   Edit
@@ -152,6 +216,7 @@ const mapDispatchToProps = {
   editData,
   deleteData,
   deleteAll,
+  deleteSome,
   clearCurrent
 };
 
@@ -161,7 +226,8 @@ Results.proptyps = {
   editData: PropTypes.func.isRequired,
   deleteData: PropTypes.object.isRequired,
   deleteAll: PropTypes.func.isRequire,
-  clearCurrent: PropTypes.func.isRequired
+  clearCurrent: PropTypes.func.isRequired,
+  deleteSome: PropTypes.func.isRequired
 };
 
 export default connect(

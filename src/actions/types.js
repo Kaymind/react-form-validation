@@ -6,6 +6,7 @@ export const EDIT = 'EDIT';
 export const CLEAR_CURRENT = 'CLEAR_CURRENT';
 export const LOAD_DATA = 'LOAD_DATA';
 export const DELETE_ALL = 'DELETE_ALL';
+export const DELETE_SOME = 'DELETE_SOME';
 
 // ALERT ACTION TYPE
 export const SET_ALERT = 'SET_ALERT';

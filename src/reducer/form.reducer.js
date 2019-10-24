@@ -1,4 +1,13 @@
-import { LOAD_DATA, ADD, UPDATE, DELETE_ALL, DELETE, EDIT, CLEAR_CURRENT} from '../actions/types';
+import {
+  LOAD_DATA,
+  ADD,
+  UPDATE,
+  DELETE_ALL,
+  DELETE,
+  DELETE_SOME,
+  EDIT,
+  CLEAR_CURRENT
+} from "../actions/types";
 
 const initialState = {
   formData: [],
@@ -14,7 +23,7 @@ const formReducer = (state = initialState, action) => {
       if (data === null) data = [];
       return {
         ...state,
-        formData: [...state.formData, ...data]
+        formData: [...data]
       };
     case ADD:
       let arrData = [];
@@ -55,6 +64,16 @@ const formReducer = (state = initialState, action) => {
       return {
         ...state,
         formData: [...deletedData],
+        edit: null
+      };
+    case DELETE_SOME:
+      const deleteSomeData = JSON.parse(
+        localStorage.getItem("formData")
+      ).filter(data => !payload.find(({ id }) => data.id === id) && data);
+      localStorage.setItem("formData", JSON.stringify(deleteSomeData));
+      return {
+        ...state,
+        formData: [...deleteSomeData],
         edit: null
       };
     case DELETE_ALL:

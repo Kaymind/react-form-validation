@@ -6,6 +6,7 @@ import {
   UPDATE,
   EDIT,
   LOAD_DATA,
+  DELETE_SOME,
   CLEAR_CURRENT
 } from "./types";
 
@@ -50,5 +51,11 @@ export const loadData = () => {
 export const deleteAll = () => {
   return dispatch => {
     dispatch({ type: DELETE_ALL });
+  };
+};
+
+export const deleteSome = data => {
+  return dispatch => {
+    dispatch({ type: DELETE_SOME, payload: data });
   };
 };

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { connect } from "react-redux";
-import PhoneInput from 'react-phone-input-2';
-import 'react-phone-input-2/dist/style.css';
+import PhoneInput from "react-phone-input-2";
+import "react-phone-input-2/dist/style.css";
 import { addData, clearCurrent, updateData } from "../actions/form.action";
 import { setAlert } from "../actions/alert.action";
 import PropTypes from "prop-types";
@@ -448,29 +448,29 @@ const Form = ({ formReducer, addData, clearCurrent, updateData, setAlert }) => {
           <label htmlFor="phone" className="w-50 text-left">
             Mobile Phone:
           </label>
-          <div style={{margin: '5px'}}>
-            <PhoneInput 
-                  value={phone.countrycode} 
-                  onChange = {phoneCountryOnChange} 
-                  disableAreaCodes={true}
-                  enableSearchField={true}
-                  defaultCountry={'th'}
-                  inputStyle={{width: '105px'}}
-            />
-            </div>
-          </div>
-          <div className="form-group d-flex align-items-center">
-            {"-"}
-            <input
-              type="text"
-              className="w-100 ml-1 form-control"
-              name="phoneNumber"
-              value={phone.phonenumber}
-              onChange={phoneNumOnChange}
-              style={{ width: "200px", height: "30px", fontSize: "0.8rem" }}
+          <div style={{ margin: "5px" }}>
+            <PhoneInput
+              value={phone.countrycode}
+              onChange={phoneCountryOnChange}
+              disableAreaCodes={true}
+              enableSearchField={true}
+              defaultCountry={"th"}
+              inputStyle={{ width: "105px" }}
             />
           </div>
         </div>
+        <div className="form-group d-flex align-items-center">
+          {"-"}
+          <input
+            type="text"
+            className="w-100 ml-1 form-control"
+            name="phoneNumber"
+            value={phone.phonenumber}
+            onChange={phoneNumOnChange}
+            style={{ width: "200px", height: "30px", fontSize: "0.8rem" }}
+          />
+        </div>
+      </div>
       <div className="row">
         <div className="form-group">
           <label htmlFor="passport">Passport No:</label>
