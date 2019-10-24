@@ -137,7 +137,6 @@ const Results = ({
       }
     });
   };
-  // value={selectAll === false ? false : true}
   return (
     <Fragment>
       <div className="form-group d-flex justify-content-between">
