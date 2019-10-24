@@ -108,7 +108,7 @@ const Results = ({
           />
           <label htmlFor="selectAll">Select All</label>
           <button
-            className="mx-2"
+            className="mx-2 btn btn-danger"
             onClick={() => {
               handleDeleteAll();
               setCurrentPage(1);
