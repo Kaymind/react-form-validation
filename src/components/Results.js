@@ -1,5 +1,6 @@
 import React, { useState, useEffect, Fragment } from "react";
 import { Link } from "react-router-dom";
+import { setAlert } from "../actions/alert.action";
 import { connect } from "react-redux";
 import {
   loadData,
@@ -10,8 +11,11 @@ import {
   clearCurrent
 } from "../actions/form.action";
 import PropTypes from "prop-types";
-
 import Pagination from "./Pagination";
+
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
+const MySwal = withReactContent(Swal);
 
 const Results = ({
   formReducer,
@@ -20,6 +24,7 @@ const Results = ({
   deleteData,
   deleteAll,
   deleteSome,
+  setAlert,
   clearCurrent
 }) => {
   useEffect(() => {
@@ -81,17 +86,60 @@ const Results = ({
   };
 
   const handleDeleteAll = () => {
-    setSelectAll(false);
-    let deletedData = [];
-    if (selectAll === true) {
-      deleteAll();
-    } else {
-      deletedData = checkboxItem.filter(item =>
-        item.isChecked === true ? item : ""
-      );
-      deleteSome(deletedData);
-    }
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.value) {
+        Swal.fire(
+          'Deleted!',
+          'Your file has been deleted.',
+          'success'
+        );
+        setSelectAll(false);
+        let deletedData = [];
+        if (selectAll === true) {
+          deleteAll();
+          setAlert("Records deleted", "success");
+        } else {
+          deletedData = checkboxItem.filter(item =>
+            item.isChecked === true ? item : ""
+          );
+          deleteSome(deletedData);
+          setAlert(`${deletedData.length > 1 ? 'Records' : 'Record'} deleted`, "success");
+        }
+      }
+    });
   };
+
+  const handleDeleteByItem = (data) => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      type: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.value) {
+        Swal.fire(
+          'Deleted!',
+          'Your file has been deleted.',
+          'success'
+        );
+        setAlert("Record deleted", "success")
+        deleteData(data.id);
+        clearCurrent();
+      }
+    });
+  };
+
   return (
     <Fragment>
       <div className="form-group d-flex justify-content-between">
@@ -188,10 +236,7 @@ const Results = ({
                 /{" "}
                 <Link
                   to="!#"
-                  onClick={() => {
-                    deleteData(data.id);
-                    clearCurrent();
-                  }}
+                  onClick={() => handleDeleteByItem(data)}
                 >
                   Delete
                 </Link>
@@ -216,6 +261,7 @@ const mapDispatchToProps = {
   deleteData,
   deleteAll,
   deleteSome,
+  setAlert,
   clearCurrent
 };
 
@@ -226,7 +272,8 @@ Results.proptyps = {
   deleteData: PropTypes.object.isRequired,
   deleteAll: PropTypes.func.isRequire,
   clearCurrent: PropTypes.func.isRequired,
-  deleteSome: PropTypes.func.isRequired
+  deleteSome: PropTypes.func.isRequired,
+  setAlert: PropTypes.func.isRequired,
 };
 
 export default connect(
